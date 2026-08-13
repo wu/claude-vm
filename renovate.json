@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "timezone": "America/Los_Angeles",
+  "minimumReleaseAge": "3 days",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Version pins preceded by a `# renovate:` marker comment (scripts/*.sh, claude-vm.pkr.hcl)",
+      "managerFilePatterns": ["/\\.sh$/", "/\\.pkr\\.hcl$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z0-9-]+) depName=(?<depName>\\S+)(?: versioning=(?<versioning>\\S+))?(?: extractVersion=(?<extractVersion>\\S+))?\\n[^\\n:=]*?[=:]\\s*\"?(?<currentValue>[^\"\\s:]+)(?:\"|\\s|$)"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "minimumReleaseAge": "14 days"
+    }
+  ]
+}

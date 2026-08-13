@@ -1,0 +1,13 @@
+#cloud-config
+
+# Runs on the VM's first boot (NoCloud datasource from cloud-init.iso) and
+# creates the one and only user. The shell starts as bash because zsh isn't
+# in the stock cloud image yet; scripts/01-base.sh installs zsh and switches.
+users:
+  - name: wu
+    plain_text_passwd: wu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    shell: /bin/bash
+
+ssh_pwauth: true
