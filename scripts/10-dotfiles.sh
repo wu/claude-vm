@@ -9,7 +9,7 @@ VM_HOME="/home/$VM_USER"
 # sync with the repo's top-level dotfiles (re-running install.sh in the VM
 # picks up anything new).
 sudo -u "$VM_USER" ln -sfn "$VM_HOME/projects/dot" "$VM_HOME/dot"
-for f in .emacs .vimrc .zprofile .zshrc; do
+for f in .emacs .vimrc .zprofile .zshrc .gitconfig; do
   sudo -u "$VM_USER" ln -sfn "$VM_HOME/projects/dot/$f" "$VM_HOME/$f"
 done
 
@@ -20,9 +20,3 @@ done
 sudo mkdir -p /Volumes/tank
 sudo chown "$VM_USER:$VM_USER" /Volumes/tank
 sudo -u "$VM_USER" ln -sfn "$VM_HOME/projects" /Volumes/tank/projects
-
-
-# .gitconfig is a real file, copied in by a Packer file provisioner from
-# the build host's ~/projects/dot/.gitconfig, so the credential helper can
-# be set here without it leaking into the shared repo copy.
-sudo -u "$VM_USER" -H git config --global credential.helper store

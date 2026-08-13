@@ -68,14 +68,6 @@ build {
     environment_vars  = ["VM_USER=${local.vm_user}"]
   }
 
-  # .gitconfig is copied in from the build host's dot repo rather than
-  # symlinked like the other dotfiles, so the image can carry settings
-  # (credential.helper, set in 10-dotfiles.sh) without writing to the repo copy.
-  provisioner "file" {
-    source      = pathexpand("~/projects/dot/.gitconfig")
-    destination = "/home/${local.vm_user}/.gitconfig"
-  }
-
   provisioner "shell" {
     pause_before     = "10s"
     environment_vars = ["VM_USER=${local.vm_user}"]
