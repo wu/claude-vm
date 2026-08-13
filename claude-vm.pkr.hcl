@@ -18,7 +18,7 @@ variable "vm_name" {
 
 variable "disk_size_gb" {
   type    = number
-  default = 60
+  default = 20
 }
 
 variable "cpu_count" {
