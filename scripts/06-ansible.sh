@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 sudo apt-get install -y pipx
 
 # renovate: datasource=pypi depName=ansible
-ANSIBLE_VERSION=14.2.0
+ANSIBLE_VERSION=14.3.0
 
 # --include-deps: the "ansible" package itself only ships the
 # "ansible-community" script — the actual CLI (ansible, ansible-playbook,
