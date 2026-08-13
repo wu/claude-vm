@@ -10,6 +10,7 @@
 #
 # Usage (on the Mac):
 #   make            # build the whole thing (safe to re-run any time)
+#   make help       # list every target and the variables you can override
 #   make delete     # remove the built VM
 #   make clean      # drop cached artifacts to pick up a newer cloud image
 
@@ -26,9 +27,9 @@ ARCH := $(shell uname -m | sed -e 's/x86_64/amd64/')
 # stream; "<codename>/current" is the untested daily preview build.
 IMAGE_URL := https://cloud-images.ubuntu.com/releases/$(UBUNTU_RELEASE)/release/ubuntu-$(UBUNTU_VERSION)-server-cloudimg-$(ARCH).img
 
-.PHONY: build vm delete clean renovate
+.PHONY: build vm delete clean renovate help
 
-build: vm cloud-init.iso
+build: vm cloud-init.iso  ## Build the image and swap it in as VM_NAME (default target)
 	packer init .
 	packer build -var "vm_name=$(BUILD_NAME)" .
 	@if tart list --format json | jq -e '.[] | select(.Name == "$(VM_NAME)" and .Running)' >/dev/null 2>&1; then \
@@ -45,7 +46,7 @@ build: vm cloud-init.iso
 # BUILD_NAME so an existing $(VM_NAME) is left alone until the swap in
 # "build" above. "cp -c" makes an APFS clone, so image.raw survives for the
 # next build without costing space.
-vm: image.raw
+vm: image.raw  ## Create the empty VM_NAME-build VM from the cloud image (no provisioning)
 	tart delete $(BUILD_NAME) || true
 	tart create --linux $(BUILD_NAME)
 	cp -c image.raw "$$HOME/.tart/vms/$(BUILD_NAME)/disk.img"
@@ -62,11 +63,11 @@ cloud-init.iso: cloud-init/user-data cloud-init/meta-data cloud-init/network-con
 	rm -f $@
 	hdiutil makehybrid -iso -joliet -default-volume-name cidata -o $@ cloud-init/
 
-delete:
+delete:  ## Delete both the finished and the in-progress build VM
 	tart delete $(VM_NAME) || true
 	tart delete $(BUILD_NAME) || true
 
-clean:
+clean:  ## Remove cached artifacts (image.qcow2, image.raw, cloud-init.iso)
 	rm -f image.qcow2 image.raw cloud-init.iso
 
 # Run this one inside a claude-vm clone, not on the Mac host like the
@@ -90,7 +91,21 @@ clean:
 #   - inside a larger repo (e.g. geektank-k8s): this tree is a subdirectory,
 #     so nothing is discovered — not this renovate.json, not the parent's —
 #     and the file has to be passed explicitly or no deps are found at all.
-renovate:
+renovate:  ## Report available dependency updates (run inside a claude-vm clone, not the Mac host)
 	@if [ "$$(git rev-parse --show-toplevel 2>/dev/null)" = "$$(pwd)" ]; then cfg=; else cfg=RENOVATE_CONFIG_FILE=renovate.json; fi; \
 	set -x; env GITHUB_COM_TOKEN=$(GITHUB_COM_TOKEN) $$cfg \
 		LOG_LEVEL=debug LOG_FORMAT=json RENOVATE_PLATFORM=local renovate | bin/renovate-summary.py
+
+# Kept last so "build" stays the default goal. Target descriptions are the
+# "## " comments on the target lines above; variables are listed by hand.
+help:  ## Show this help
+	@echo "Targets (default: build):"
+	@grep -hE '^[a-zA-Z_-]+:.*## ' $(MAKEFILE_LIST) \
+		| awk -F'[:]|## ' '{ printf "  %-9s %s\n", $$1, $$NF }'
+	@echo
+	@echo "Variables (override on the command line, e.g. make VM_NAME=foo):"
+	@printf "  %-18s %s\n" \
+		"VM_NAME"          "name of the finished VM [$(VM_NAME)]" \
+		"UBUNTU_RELEASE"   "Ubuntu codename to build from [$(UBUNTU_RELEASE)]" \
+		"UBUNTU_VERSION"   "Ubuntu version matching that codename [$(UBUNTU_VERSION)]" \
+		"GITHUB_COM_TOKEN" "github.com token for 'make renovate' lookups [$(if $(GITHUB_COM_TOKEN),set,unset)]"
