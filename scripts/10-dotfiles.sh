@@ -10,7 +10,17 @@ VM_HOME="/home/$VM_USER"
 # picks up anything new).
 sudo -u "$VM_USER" ln -sfn "$VM_HOME/projects/dot" "$VM_HOME/dot"
 for f in .emacs .vimrc .zprofile .zshrc .gitconfig; do
-  sudo -u "$VM_USER" ln -sfn "$VM_HOME/projects/dot/$f" "$VM_HOME/$f"
+  src="$VM_HOME/projects/dot/$f"
+  # During the image build the share isn't mounted, so every source is
+  # missing and the dangling links are expected — only complain about a file
+  # that's absent from a dot repo that is actually there (i.e. when this runs
+  # inside a booted VM). Either way a missing file is a warning, never fatal:
+  # one dotfile disappearing from the repo shouldn't fail the build.
+  if [ -d "$VM_HOME/projects/dot" ] && [ ! -e "$src" ]; then
+    echo "warning: $src not found - linking $VM_HOME/$f anyway" >&2
+  fi
+  sudo -u "$VM_USER" ln -sfn "$src" "$VM_HOME/$f" ||
+    echo "warning: could not link $VM_HOME/$f -> $src" >&2
 done
 
 # /Volumes/tank/projects -> ~/projects, so paths written on the Mac host
