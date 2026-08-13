@@ -23,12 +23,12 @@ variable "disk_size_gb" {
 
 variable "cpu_count" {
   type    = number
-  default = 4
+  default = 2
 }
 
 variable "memory_gb" {
   type    = number
-  default = 8
+  default = 4
 }
 
 # cloud-init/user-data is the source of truth for the account name — every
