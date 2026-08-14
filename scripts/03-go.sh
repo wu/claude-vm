@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=golang-version depName=go
-GO_VERSION=1.26.5
+GO_VERSION=1.26.6
 ARCH="$(dpkg --print-architecture)" # arm64 on Apple Silicon, amd64 on Intel
 
 curl -fsSL "https://go.dev/dl/go${GO_VERSION}.linux-${ARCH}.tar.gz" -o /tmp/go.tar.gz
