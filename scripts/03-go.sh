@@ -21,15 +21,15 @@ echo 'export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"' | sudo tee /etc/profil
 #
 # Pinned to match the versions used by a downstream project's CI lint/scan
 # workflow.
-# renovate: datasource=go depName=github.com/golangci/golangci-lint
-GOLANGCI_LINT_VERSION=1.64.8
+# renovate: datasource=go depName=github.com/golangci/golangci-lint/v2
+GOLANGCI_LINT_VERSION=2.12.2
 # renovate: datasource=go depName=golang.org/x/vuln
 GOVULNCHECK_VERSION=1.6.0
 # renovate: datasource=go depName=github.com/securego/gosec/v2
 GOSEC_VERSION=2.28.0
 
 sudo -u "$VM_USER" -H env PATH="$PATH:/usr/local/go/bin" \
-  go install "github.com/golangci/golangci-lint/cmd/golangci-lint@v${GOLANGCI_LINT_VERSION}"
+  go install "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v${GOLANGCI_LINT_VERSION}"
 sudo -u "$VM_USER" -H env PATH="$PATH:/usr/local/go/bin" \
   go install "golang.org/x/vuln/cmd/govulncheck@v${GOVULNCHECK_VERSION}"
 sudo -u "$VM_USER" -H env PATH="$PATH:/usr/local/go/bin" \
