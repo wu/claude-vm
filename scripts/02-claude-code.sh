@@ -6,8 +6,7 @@ VM_HOME="/home/$VM_USER"
 # The installer takes the version to install as its first argument; the
 # published versions match the @anthropic-ai/claude-code npm package's.
 # renovate: datasource=npm depName=@anthropic-ai/claude-code
-CLAUDE_CODE_VERSION=2.1.229
-
+CLAUDE_CODE_VERSION=2.1.267
 # Install Claude Code for $VM_USER with the native installer (lands in
 # $VM_HOME/.local/bin and wires up PATH in the shell profile).
 sudo -u "$VM_USER" -H env CLAUDE_CODE_VERSION="$CLAUDE_CODE_VERSION" \

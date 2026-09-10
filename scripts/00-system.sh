@@ -16,7 +16,7 @@ sudo apt-get install -y "linux-generic-hwe-${VERSION_ID}"
 
 # Guest agent for Tart VMs (makes "tart ip" and "tart exec" work)
 # renovate: datasource=github-releases depName=openai/tart-guest-agent extractVersion=^v(?<version>.+)$
-TART_GUEST_AGENT_VERSION=0.12.0
+TART_GUEST_AGENT_VERSION=0.14.1
 ARCH="$(dpkg --print-architecture)" # arm64 on Apple Silicon, amd64 on Intel
 
 curl -fsSL -o /tmp/tart-guest-agent.deb \
