@@ -82,7 +82,8 @@ build {
       "scripts/08-renovate.sh",
       "scripts/09-latex.sh",
       "scripts/10-dotfiles.sh",
-      "scripts/11-disable-ssh.sh",
+      "scripts/11-cleanup.sh",
+      "scripts/12-disable-ssh.sh",
     ]
   }
 }
