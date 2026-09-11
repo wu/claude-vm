@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # renovate: datasource=node-version depName=node
-NODE_VERSION=24.21.0
+NODE_VERSION=26.8.2
 ARCH="$(dpkg --print-architecture)" # arm64 on Apple Silicon, amd64 on Intel
 case "$ARCH" in
   amd64) NODE_ARCH=x64 ;;
