@@ -22,7 +22,7 @@ echo 'export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"' | sudo tee /etc/profil
 # Pinned to match the versions used by a downstream project's CI lint/scan
 # workflow.
 # renovate: datasource=go depName=github.com/golangci/golangci-lint/v2
-GOLANGCI_LINT_VERSION=2.13.2
+GOLANGCI_LINT_VERSION=2.14.0
 # renovate: datasource=go depName=golang.org/x/vuln
 GOVULNCHECK_VERSION=1.8.0
 # renovate: datasource=go depName=github.com/securego/gosec/v2
