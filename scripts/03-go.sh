@@ -24,7 +24,7 @@ echo 'export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"' | sudo tee /etc/profil
 # renovate: datasource=go depName=github.com/golangci/golangci-lint/v2
 GOLANGCI_LINT_VERSION=2.14.0
 # renovate: datasource=go depName=golang.org/x/vuln
-GOVULNCHECK_VERSION=1.8.0
+GOVULNCHECK_VERSION=1.9.0
 # renovate: datasource=go depName=github.com/securego/gosec/v2
 GOSEC_VERSION=2.29.0
 # gosec 2.29.0 pins x/tools v0.49.0, which can't read the export data Go
