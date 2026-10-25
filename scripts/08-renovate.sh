@@ -4,7 +4,7 @@ set -euo pipefail
 export PATH="$PATH:/usr/local/node/bin"
 
 # renovate: datasource=npm depName=renovate
-RENOVATE_VERSION=44.160.0
+RENOVATE_VERSION=44.171.8
 
 sudo env PATH="$PATH" npm install -g "renovate@${RENOVATE_VERSION}"
 
